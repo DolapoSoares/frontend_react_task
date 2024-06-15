@@ -1,11 +1,11 @@
 import React , { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const EditItem = () => {
     const { id } = useParams();
     const [item, setItem] = useState({ title :"", body: ""});
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchItem();
@@ -14,7 +14,7 @@ const EditItem = () => {
 
 
   const fetchItem = async () => {
-    const res = await axios.get(`https://jsonplaceholder.typicode.com/guide/`);
+    const res = await axios.get(`https://jsonplaceholder.typicode.com/`);
     setItem(res.data);
   };
 
@@ -26,7 +26,7 @@ const EditItem = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await axios.put(`https://jsonplaceholder.typicode.com/guide/`, item);
-    history.push(`/item/${id}`);
+    navigate(`/item/${id}`);
   };
 
   return (

@@ -1,13 +1,13 @@
 import React , { useEffect, useState} from "react";
 import axios from 'axios';
-import { useParams, useHistory} from `react-router-dom`
-import { Link } from "react-router-dom";
+import { Link, useParams, useNavigate} from 'react-router-dom';
+
 
 const ItemDetail = () => {
 
     const { id } = useParams();
     const[item, setItem] = useState(null);
-    const history = useHistory();
+    const navigate = useNavigate();
    
     useEffect(() => {
         fetchItems();
@@ -15,12 +15,13 @@ const ItemDetail = () => {
 
     const fetchItems = async () => {
         const res = await axios.get(`https://jsonplaceholder.typicode.com/guide/`);
+        console.log(res.data)
         setItem(res.data)
     }
 
     const handleDelete = async () => {
         const res = await axios.get(`https://jsonplaceholder.typicode.com/guide/`);
-        history.push('/');
+        navigate('/');
     }
     return(
         <div>

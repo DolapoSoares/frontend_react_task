@@ -10,7 +10,7 @@ const ItemList = () => {
         fetchItems(loading);
     },[loading]);
 
-    const fetchItems = async (page) => {
+    const fetchItems = async (loading) => {
         const res = await axios.get(`https://jsonplaceholder.typicode.com/guide/`);
         setItems(res.data)
     }
@@ -31,11 +31,11 @@ const ItemList = () => {
             <ul>
                 {items.map((item, index) => (
                     <li key={index}>
-                        <Link to={`/item/${item.id}`}>{item.name}</Link>
+                        <Link to={`/item/${item.id}`}>{item.title}</Link>
                     </li>
                     ))}
             </ul>
-            <button onClick={previousPage} disabled={page === 1}>Previous</button>
+            <button onClick={previousPage} disabled={loading === 1}>Previous</button>
             <button onClick={nextPage}>Next</button>
             
         </div>
