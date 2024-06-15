@@ -4,6 +4,8 @@ import { useParams, useHistory} from `react-router-dom`
 
 const EditItem = () => {
     return(
-        
+        <div>
+            
+        </div>
     )
 }
