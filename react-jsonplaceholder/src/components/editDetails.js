@@ -8,19 +8,18 @@ const EditItem = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+
+        const fetchItem = async () => {
+            try{
+                const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+                setItem(res.data);
+            } catch (error) {
+                console.error("Error occured while fetching the item", error)
+            }
+        };
         fetchItem();
     },[id]);
-
-
-  const fetchItem = async () => {
-    try{
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
-        setItem(res.data);
-    } catch (error) {
-        console.error("Error occured while fetching the item", error)
-    }
   
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;

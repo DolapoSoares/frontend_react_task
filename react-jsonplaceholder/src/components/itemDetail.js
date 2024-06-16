@@ -9,18 +9,26 @@ const ItemDetail = () => {
     const navigate = useNavigate();
    
     useEffect(() => {
-        fetchItems();
+        const fetchItem = async () => {
+            try{
+            const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+            setItem(res.data)
+            } catch (error) {
+                console.error("Error ferching the details", error)
+            }
+        }
+        fetchItem();
     },[id]);
 
-    const fetchItems = async () => {
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
-        console.log(res.data)
-        setItem(res.data)
-    }
+    
 
     const handleDelete = async () => {
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
-        navigate('/');
+        try {
+            await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`);
+            navigate('/');
+        } catch (error) {
+            console.error('Error deleting item:', error);
+        }
     }
     return(
         <div>
