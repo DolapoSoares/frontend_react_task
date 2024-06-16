@@ -9,13 +9,17 @@ const EditItem = () => {
 
     useEffect(() => {
         fetchItem();
-
     },[id]);
 
 
   const fetchItem = async () => {
-    const res = await axios.get(`https://jsonplaceholder.typicode.com/`);
-    setItem(res.data);
+    try{
+        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+        setItem(res.data);
+    } catch (error) {
+        console.error("Error occured while fetching the item", error)
+    }
+  
   };
 
   const handleChange = (e) => {
@@ -25,8 +29,13 @@ const EditItem = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.put(`https://jsonplaceholder.typicode.com/guide/`, item);
-    navigate(`/item/${id}`);
+    try {
+        await axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, item);
+        navigate(`/item/${id}`);
+    } catch (error) {
+        console.error("Error occured while updating the item", error)
+    }
+   
   };
 
   return (

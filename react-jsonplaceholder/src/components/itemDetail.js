@@ -4,7 +4,6 @@ import { Link, useParams, useNavigate} from 'react-router-dom';
 
 
 const ItemDetail = () => {
-
     const { id } = useParams();
     const[item, setItem] = useState(null);
     const navigate = useNavigate();
@@ -29,7 +28,7 @@ const ItemDetail = () => {
                 <div>
                     <h1>{item.title}</h1>
                     <p>{item.body}</p>
-                    <Link  >
+                    <Link to={`/edit/${item.id}`} >
                         <button>Edit</button>
                     </Link>
                     <button onClick={handleDelete}>Delete</button>
