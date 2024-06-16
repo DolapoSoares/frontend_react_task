@@ -11,7 +11,7 @@ const ItemList = () => {
     },[loading]);
 
     const fetchItems = async (loading) => {
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/guide/`);
+        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts?_page=${loading}&_limit=10`);
         setItems(res.data)
     }
 

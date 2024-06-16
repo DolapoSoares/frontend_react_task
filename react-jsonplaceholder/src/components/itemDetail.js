@@ -14,13 +14,13 @@ const ItemDetail = () => {
     },[id]);
 
     const fetchItems = async () => {
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/guide/`);
+        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
         console.log(res.data)
         setItem(res.data)
     }
 
     const handleDelete = async () => {
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/guide/`);
+        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
         navigate('/');
     }
     return(
