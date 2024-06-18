@@ -1,45 +1,79 @@
-import React , { useEffect, useState} from "react";
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom';
 
 const ItemList = () => {
     const [items, setItems] = useState([]);
-    const [loading, setLoading] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage] = useState(10);
 
     useEffect(() => {
-        fetchItems(loading);
-    },[loading]);
+        const fetchItems = async () => {
+            try {
+                const res = await axios.get('https://jsonplaceholder.typicode.com/posts');
+                setItems(res.data);
+                localStorage.setItem('items', JSON.stringify(res.data));
+            } catch (error) {
+                console.error('Error fetching items:', error);
+            }
+        };
 
-    const fetchItems = async (loading) => {
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts?_page=${loading}&_limit=10`);
-        setItems(res.data)
-    }
+        const storedItems = localStorage.getItem('items');
+        if (storedItems) {
+            setItems(JSON.parse(storedItems));
+        } else {
+            fetchItems();
+        }
+    }, []);
 
-    const nextPage = () => {
-        setLoading(loading + 1)
-    };
+    // Calculate the indices for the current page items
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
 
-    const previousPage = () => {
-        if(loading > 1) {
-            setLoading(loading - 1);
-    }
-    };
+    // Function to change pages
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    return(
+    return (
         <div>
-            <h1>Items List</h1>
+            <h1>Item List</h1>
             <ul>
-                {items.map((item, index) => (
-                    <li key={index}>
+                {currentItems.map(item => (
+                    <li key={item.id}>
                         <Link to={`/item/${item.id}`}>{item.title}</Link>
                     </li>
-                    ))}
+                ))}
             </ul>
-            <button onClick={previousPage} disabled={loading === 1}>Previous</button>
-            <button onClick={nextPage}>Next</button>
-            
+            <Pagination
+                itemsPerPage={itemsPerPage}
+                totalItems={items.length}
+                paginate={paginate}
+                currentPage={currentPage}
+            />
         </div>
-    )
+    );
+};
+
+const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
+    const pageNumbers = [];
+
+    for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
+        pageNumbers.push(i);
+    }
+
+    return (
+        <nav>
+            <ul className="pagination">
+                {pageNumbers.map(number => (
+                    <li key={number} className={`page-item ${currentPage === number ? 'active' : ''}`}>
+                        <button onClick={() => paginate(number)} className="page-link">
+                            {number}
+                        </button>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
 };
 
 export default ItemList;

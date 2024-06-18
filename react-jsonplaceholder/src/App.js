@@ -7,13 +7,11 @@ import EditItem from './components/editDetails';
 function App() {
   return (
     <Router>
-      <div className="Routes">
         <Routes>
           <Route path="/" element={<ItemList />} />
           <Route path="/item/:id" element={<ItemDetail />} />
           <Route path="/edit/:id" element={<EditItem />}/>
         </Routes>
-      </div>
     </Router>
   );
 }
